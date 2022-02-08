@@ -1,5 +1,4 @@
 ﻿$(() => {
-    console.log('hi')
     $(".edit-contributer").on('click', function () {
         let firstName = $(this).data("first-name");
         let lastName = $(this).data("last-name");
