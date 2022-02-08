@@ -1,0 +1,68 @@
+﻿@model ContributionsViewModel
+@using SimchaFund.Data;
+
+@section css{
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+}
+
+<div class="container">
+    <main role="main" class="pb-3" style="margin-top: 60px">
+
+        <div class="header">
+            <h1>
+                Contributors for the
+                @Model.Simcha.Name Simcha
+            </h1>
+            <div class="table-responsive">
+                <form method="post" action="/simchos/updatecontributions">
+                    <input type="hidden" name="simchaId" value=@Model.Simcha.Id>
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>Contribute</th>
+                            <th>Name</th>
+                            <th>Balance</th>
+                            <th>Always Include</th>
+                            <th>Amount</th>
+                        </tr>
+                        <tbody>
+                            @foreach (SimchaContributor c in Model.SimchaContributors)
+                            {
+                                 <input type="hidden" name="SimchaContributor[@c.Counter].contributorId" value="@c.ContributorId">
+                                <tr>
+
+                                    <td>
+                                        <input class="contribute" type="checkbox" name="SimchaContributor[@c.Counter].Included" value="true" @(c.Included ? "checked": "")>
+
+                                    </td>
+                                    <td>
+                                        @c.Name
+                                    </td>
+                                    <td>
+                                        $@c.Balance
+                                    </td>
+                                    <td>
+                                        <span class="@(c.AlwaysInclude?"oi oi-check":"")"></span>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="SimchaContributor[@c.Counter].amount" class="form-control" value="@(c.Amount> 0 ? $"{c.Amount}":"5.00")">
+                                        <input type="hidden" name="SimchaContributor[@c.Counter].simchaId" value="@Model.Simcha.Id">
+                                        <input type="hidden" name="SimchaContributor[@c.Counter].CreatedDate" value="@DateTime.Now">
+                                       
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                    <div style="text-align:center;">
+                        <button class="btn-lg btn-danger">Update</button>
+                    </div>
+                </form>
+            </div>
+    </main>
+</div>
+
+@section Scripts{
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+<script src="~/js/togglebutton.js"></script>
+}
